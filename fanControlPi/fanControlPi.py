@@ -5,53 +5,52 @@ import os
 from time import sleep
 
 def readTemperature():
-    # Auslesen der Temperatur der CPU
+    # Reading CPU temprature
     readTemp = os.popen("cat /sys/class/thermal/thermal_zone0/temp").readline()
-    # Umwandeln der ausgelesenen Temperatur von string in integer, ins richtige
-    # Format und von float in integer
+    # Convert the read temperature into integer, to the correct format and to integer
     readTemp = int(int(readTemp) / 1000)
+
     return readTemp
 
-# Initialisierung der While-Schleife
+# Initialisation of the while-loop
 x = 1
 
-while x < 10:
-    # Einlesen der Temperatur
+while x > 0:
+    # GEt the temperature
     temperatur = readTemperature()
 
     # debuging
     #print(temperatur)
 
-    # Pin Belegung festlegen
+    # Set the pin
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(11, GPIO.OUT)
 
     # debuging
     #print("Start while")
 
-    # Temperatur unter 55°C ist der Lüfter aus
+    # If the temperatur under 55 °C
     if temperatur <= 55:
         GPIO.output(11, GPIO.LOW)
 
-        # Löschen der Pin Belegung da der Ausgang nicht vollständig abschaltet
+        # Delete the pin set
         GPIO.cleanup()
 
         # debuging
-        #print("unter 55")
+        #print("under 55")
 
-        # Fünf Minuten Pause bis die Temperatur erneut geprüft wird
+        # Programm timeout for five minute
         sleep(300)
 
-    # Temperatur über 55°C ist der Lüfter an
+    # Else temperature over 55 °C
     else:
         GPIO.output(11, GPIO.HIGH)
 
         # debuging
-        #print("über 55")
+        #print("over 55")
 
-        # Fünf Minuten Pause bis die Temperatur erneut geprüft wird
+        # Programm timeout for five minute
         sleep(300)
 
-        # Aus sicherheitsgründen wird vor dem erneuten Prüfen der Temperatur,
-        # die Pin Belegung gelöscht
+        # ADelete the pin set
         GPIO.cleanup()
