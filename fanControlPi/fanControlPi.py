@@ -52,5 +52,5 @@ while x > 0:
         # Programm timeout for five minute
         sleep(300)
 
-        # ADelete the pin set
+        # Delete the pin set
         GPIO.cleanup()
